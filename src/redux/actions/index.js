@@ -15,29 +15,83 @@ export const getProduct = (id) => {
     }
 
 }
-export const increment = () => {
+export const addToCart = (id, price) => {
     return {
-        type: 'INCREMENT'
+        type: 'ADD_TO_CART',
+        payload: axios.post(`${BASE_URL}carts/`, {
+            'user_id': 1,
+            'product_id': id,
+            'product_qty': 1,
+            'total' : price
+        })
+    }
+
+}
+export const getAllCart = () => {
+    return {
+        type: 'GET_ALL_CART',
+        payload: axios.get(`${BASE_URL}carts/1`)
+    }
+
+}
+export const incrementQty = (id, qty) => {
+    return {
+        type: 'INCREMENT_QTY',
+        payload:  axios.patch(`${BASE_URL}carts/${id}`, {
+            qty: qty
+        })
     }
 
 }
 
-export const decrement = () => {
-    return {
-        type: 'DECREMENT'
-    }
+export const decrementQty = (id, qty) => {
+    if (qty > 0) {
+        const quantity = qty
 
+        return {
+            type: 'DECREMENT_QTY',
+            payload: axios.patch(`${BASE_URL}carts/${id}`, {
+                qty: quantity
+            })
+        }
+    } else {
+        const quantity = 1
+
+        return {
+            type: 'DECREMENT_QTY',
+            payload: axios.patch(`${BASE_URL}carts/${id}`, {
+                qty: quantity
+            })
+        }
+    }
 }
-axios.get(`${BASE_URL}products`)
-                .then((response) => {
-                    // console.log(response.data);
-                    return {
-                        products: response.data.data
+
+export const inputQty = (id, text) => {
+    if (!isNaN(Number(text))) {
+        const qty = Number(text);
+        return {
+            type: 'INCREMENT_QTY',
+            payload:  axios.patch(`${BASE_URL}carts/${id}`, {
+                qty: qty
+            })
+        }
         
-                    }        
-                    // console.log(this.state.products);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            
+    } else {
+        const qty = 0
+        return {
+            type: 'INCREMENT_QTY',
+            payload:  axios.patch(`${BASE_URL}carts/${id}`, {
+                qty: qty
+            })
+        }
+        
+    }
+
+}
+export const deleteItem = (id) => {
+    return {
+        type: 'DELETE_ITEM',
+        payload: axios.delete(`${BASE_URL}carts/${id}`)
+    }
+
+}

@@ -3,14 +3,7 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, Image } from 'react-native';
 import { CardItem, View } from 'native-base';
 
-export default class Carts extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            q: 1
-        };
-    }
-
+export default class Cart extends Component {
     render() {
         return (
 

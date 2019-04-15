@@ -2,7 +2,7 @@ import { createStackNavigator } from 'react-navigation';
 
 import AppNavigator from './BottomNav';
 import Detail from '../screens/DetailsContainers';
-import Cart from '../screens/Carts';
+import Carts from '../screens/CartsContainers';
 import Checkout from '../screens/Checkout';
 
 const rootStack = createStackNavigator(
@@ -18,7 +18,7 @@ const rootStack = createStackNavigator(
             screen: Detail
         },
         Cart: {
-            screen: Cart
+            screen: Carts
         },
         Checkout: {
             screen: Checkout

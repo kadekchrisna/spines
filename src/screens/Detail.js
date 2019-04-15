@@ -27,10 +27,16 @@ export default class Detail extends Component {
         const id = this.props.navigation.getParam('id','');        
         this.props.getProduct(id);
     }
+
     onStarRatingPress(rating) {
         this.setState({
             starCount: rating
         });
+    }
+
+    toCart(id, price){
+        this.props.addToCart(id, price);
+        this.props.navigation.navigate('Cart');
     }
 
 
@@ -85,7 +91,7 @@ export default class Detail extends Component {
 
                         <TouchableOpacity
                             style={styles.buttonContainer}
-                            onPress={() => this.props.navigation.navigate('Cart')}
+                            onPress={() => this.toCart(id, price)}
                         >
                             <Text style={styles.buttonText}>Add To Cart</Text>
                         </TouchableOpacity>

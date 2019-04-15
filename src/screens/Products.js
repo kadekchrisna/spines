@@ -31,7 +31,7 @@ export default class Products extends Component {
                         <Title style={styles.titleHeader}>Spine's</Title>
                     </Left>
                     <Right>
-                        <TouchableOpacity style={styles.iconCart}>
+                        <TouchableOpacity style={styles.iconCart} onPress={()=> this.props.navigation.navigate('Cart')}>
                             <FontAwesome name="shopping-cart" size={24} color='#009C71' />
                         </TouchableOpacity>
                     </Right>
