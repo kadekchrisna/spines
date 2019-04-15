@@ -1,32 +1,29 @@
 // Libs
 import React, { Component } from 'react';
-import { Text, StyleSheet, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { Text, StyleSheet, Image, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import { Container, Content, View, Header, Right, Title, Left, CardItem, Card, Body } from 'native-base';
 import { FlatList } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {stringToRupiah} from '../redux/helpers/Currency';
 
 
 export default class Products extends Component {
 
     componentDidMount() {
-        this.props.getAll();
-        console.log(this.props.products);
-        
+        this.props.navigation.addListener('didFocus', ()=> {
+            this.props.getAll();
+        })
+             
 
     }
-    onPress = (item) => {
-        Alert.alert('Here');
-        // this.props.navigation.navigate('Detail', {
-        //     name: item.name,
-        //     description: item.description,
-        //     uri: item.uri,
-        //     price: item.price,
-        //     id: item.id
-
-        // });
+    onPress = (id) => {
+        this.props.navigation.navigate('Detail',{
+            id:id
+        });
     }
     render() {
+        console.log(this.props.products);
         return (
             <Container >
                 <Header style={styles.header} >
@@ -34,7 +31,7 @@ export default class Products extends Component {
                         <Title style={styles.titleHeader}>Spine's</Title>
                     </Left>
                     <Right>
-                        <TouchableOpacity style={styles.iconCart} onPress={() => this.props.navigation.navigate('Cart')}>
+                        <TouchableOpacity style={styles.iconCart}>
                             <FontAwesome name="shopping-cart" size={24} color='#009C71' />
                         </TouchableOpacity>
                     </Right>
@@ -48,7 +45,7 @@ export default class Products extends Component {
                             renderItem={({ item }) =>
                                 (
                                     <Card>
-                                        <TouchableOpacity onPress={() => this.onPress(item)}>
+                                        <TouchableOpacity onPress={() => this.onPress(item.id)}>
                                             <View >
                                                 <CardItem>
                                                     <Image source={{ uri: item.uri }} style={styles.imageCard} />
@@ -61,7 +58,7 @@ export default class Products extends Component {
                                                 <CardItem>
                                                     <Body style={styles.cardBody}>
                                                         <Text style={styles.textPrice}>
-                                                            {item.price}
+                                                            {stringToRupiah(String(item.price))}
                                                         </Text>
                                                     </Body>
                                                 </CardItem>

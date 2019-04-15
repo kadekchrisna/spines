@@ -1,13 +1,45 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-
-import Numbers from '../redux/components/NumbersContainers'
+// Component
 
 export default class Account extends Component {
     render() {
         return (
-           <Numbers/>
+            <SafeAreaView style={styles.container}>
+                <KeyboardAvoidingView behavior='height' style={styles.container}>
+                    <TouchableWithoutFeedback style={styles.container}>
+                        <View>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter Email"
+                                placeholderTextColor='rgba(0,0,0,0.5)'
+                                keyboardType='email-address'
+                                returnKeyType='next'
+                                autoCorrect={false}
+                                ref={'txtPassword'}
+                            />
+
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter Password"
+                                placeholderTextColor='rgba(0,0,0,0.5)'
+                                returnKeyType='go'
+                                secureTextEntry
+                                autoCorrect={false}
+                                ref={'txtPassword'}
+                            />
+                            <TouchableOpacity style={styles.buttonLogin}>
+                                <Text style={styles.buttonText}>Log In</Text>
+                            </TouchableOpacity>
+                            <View style={styles.hrLine} />
+                            <TouchableOpacity style={styles.buttonRegister}>
+                                <Text style={styles.buttonText}>Register</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         );
     }
 }

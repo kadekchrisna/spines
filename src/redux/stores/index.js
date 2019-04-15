@@ -5,10 +5,12 @@
 // export const allProducts = createStore(products)
 
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import logger from 'redux-logger'
+import promise from 'redux-promise-middleware'
 
-import counts  from '../reducers/index';
+import counts from '../reducers/index';
 
-export const abc = createStore(counts)
+export const abc = createStore(counts, {}, applyMiddleware(logger, promise))
 
 

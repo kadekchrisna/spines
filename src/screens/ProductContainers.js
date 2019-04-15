@@ -1,4 +1,4 @@
-import { getAll } from '../actions';
+import { getAll } from '../redux/actions';
 import Products from './Products';
 import { connect } from 'react-redux';
 

@@ -1,6 +1,9 @@
 import { createStackNavigator } from 'react-navigation';
 
 import AppNavigator from './BottomNav';
+import Detail from '../screens/DetailsContainers';
+import Cart from '../screens/Carts';
+import Checkout from '../screens/Checkout';
 
 const rootStack = createStackNavigator(
     {
@@ -10,6 +13,15 @@ const rootStack = createStackNavigator(
             navigationOptions: {
                 header: null
             }
+        },
+        Detail: {
+            screen: Detail
+        },
+        Cart: {
+            screen: Cart
+        },
+        Checkout: {
+            screen: Checkout
         }
     },
     {
