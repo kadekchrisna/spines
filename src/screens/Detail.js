@@ -10,7 +10,7 @@ import { stringToRupiah } from "../redux/helpers/Currency";
 
 export default class Detail extends Component {
     static navigationOptions = {
-        header: null
+        header: null,
     }
     constructor(props) {
         super(props);

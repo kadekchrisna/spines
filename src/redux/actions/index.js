@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from 'react-native-dotenv';
 
+//Product
 export const getAll = () => {
     return {
         type: 'GET_ALL_PRODUCTS',
@@ -15,6 +16,8 @@ export const getProduct = (id) => {
     }
 
 }
+
+//Cart
 export const addToCart = (id, price) => {
     return {
         type: 'ADD_TO_CART',
@@ -92,6 +95,30 @@ export const deleteItem = (id) => {
     return {
         type: 'DELETE_ITEM',
         payload: axios.delete(`${BASE_URL}carts/${id}`)
+    }
+
+}
+
+//Account
+export const registerUser = (username, email, password) => {
+    return {
+        type: 'REGISTER_USER',
+        payload: axios.post(`${BASE_URL}auth/register/`, {
+            'username': username,
+            'email': email,
+            'password' : password
+        })
+    }
+
+}
+
+export const loginUser = (email, password) => {
+    return {
+        type: 'LOGIN_USER',
+        payload: axios.post(`${BASE_URL}auth/login/`, {
+            'email': email,
+            'password' : password
+        })
     }
 
 }

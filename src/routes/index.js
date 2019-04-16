@@ -4,6 +4,8 @@ import AppNavigator from './BottomNav';
 import Detail from '../screens/DetailsContainers';
 import Carts from '../screens/CartsContainers';
 import Checkout from '../screens/Checkout';
+import Login from '../screens/LoginContainers';
+import Register from '../screens/RegisterContainers';
 
 const rootStack = createStackNavigator(
     {
@@ -18,10 +20,16 @@ const rootStack = createStackNavigator(
             screen: Detail
         },
         Cart: {
-            screen: Carts
+            screen: Carts,
         },
         Checkout: {
             screen: Checkout
+        },
+        Login: {
+            screen: Login
+        },
+        Register: {
+            screen: Register
         }
     },
     {

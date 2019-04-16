@@ -26,7 +26,7 @@ export default class Checkout extends Component {
 
     componentDidMount() {
         const { navigation } = this.props;
-        const total = navigation.getParam('total', '200000');
+        const total = navigation.getParam('total', '');
         this.setState({ total });
     }
     totalPrice = () => {
@@ -42,69 +42,109 @@ export default class Checkout extends Component {
         return (
             <Container>
                 <View style={styles.container}>
-                    <Content>
-                        <Card >
-                            <View style={styles.cardAddress}>
+                    <View style={styles.body}>
+                        <Content>
+                            <Card >
+                                <View style={styles.cardAddress}>
+                                    <CardItem>
+                                        <Text>Address :  </Text>
+                                        <View
+                                            style={{
+                                                flex: 1,
+                                                justifyContent: 'center',
+                                                alignItems: 'stretch'
+                                            }}
+                                        >
+                                            <Text>{this.state.address}</Text>
+                                        </View>
+                                    </CardItem>
+                                    <View>
+
+                                        <Button
+                                            block
+                                            color="#009C71"
+                                            title="+"
+                                            onPress={this._toggleModal}
+                                        />
+                                    </View>
+
+                                </View>
+                            </Card>
+
+                            <Card style={styles.containerCard}>
+                                <CardItem style={{ marginHorizontal: 24 }}>
+                                    <View>
+                                        <Text>Courier : </Text>
+                                    </View>
+
+                                    <Picker
+                                        selectedValue={this.state.language}
+                                        style={{ height: '100%', width: '100%' }}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.setState({ courier: itemValue })
+                                        }
+                                        selectedValue={this.state.courier}
+                                    >
+                                        <Picker.Item label="JNE YES" value="30000" />
+                                        <Picker.Item label="JNE REG" value="20000" />
+                                    </Picker>
+                                </CardItem>
+                            </Card>
+
+                            <Card style={styles.containerCard}>
                                 <CardItem>
-                                    <Text>Alamat :  </Text>
-                                    <View
+                                    <Text>Total Price :</Text>
+                                </CardItem>
+                                <CardItem style={styles.textSum}>
+                                    <Text
                                         style={{
-                                            flex: 1,
-                                            justifyContent: 'center',
-                                            alignItems: 'stretch'
+                                            fontSize: 24,
+                                            fontWeight: 'bold',
                                         }}
                                     >
-                                        <Text>{this.state.address}</Text>
-                                    </View>
+                                        {stringToRupiah(this.state.total.toString())}
+                                    </Text>
                                 </CardItem>
-                                <View>
+                            </Card>
 
-                                    <Button
-                                        block
-                                        color="#009C71"
-                                        title="+"
-                                        onPress={this._toggleModal}
-                                    />
-                                </View>
+                            <Card style={styles.containerCard}>
+                                <CardItem>
+                                    <Text>Courier Cost :</Text>
+                                </CardItem>
+                                <CardItem style={styles.textSum}>
+                                    <Text
+                                        style={{
+                                            fontSize: 24,
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {stringToRupiah(this.state.courier.toString())}
+                                    </Text>
+                                </CardItem>
+                            </Card>
+                            <Card style={styles.containerCard}>
+                                <CardItem>
+                                    <Text>Total Bill :</Text>
+                                </CardItem>
+                                <CardItem style={styles.textSum}>
+                                    <Text
+                                        style={{
+                                            fontSize: 24,
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {this.totalPrice()}
+                                    </Text>
+                                </CardItem>
+                            </Card>
+                        </Content>
+                    </View>
 
-                            </View>
-                        </Card>
-
-                        <Card style={styles.containerCard}>
-                            <CardItem style={{ marginHorizontal: 24 }}>
-                                <View>
-                                    <Text>Courir : </Text>
-                                </View>
-
-                                <Picker
-                                    selectedValue={this.state.language}
-                                    style={{ height: '100%', width: '100%' }}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ courier: itemValue })
-                                    }
-                                    selectedValue={this.state.courier}
-                                >
-                                    <Picker.Item label="JNE YES" value="30000" />
-                                    <Picker.Item label="JNE REG" value="20000" />
-                                </Picker>
-                            </CardItem>
-                        </Card>
-                        <Card style={styles.containerCard}>
-                            <CardItem>
-                                <Text>Total :</Text>
-                            </CardItem>
-                            <CardItem style={styles.textSum}>
-                                <Text
-                                    style={{
-                                        fontSize: 24,
-                                        fontWeight: 'bold',
-                                    }}
-                                >
-                                    {this.totalPrice()}
-                                </Text>
-                            </CardItem>
-                        </Card>
-                    </Content>
+                    <View style={styles.footer}>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Checkout')}>
+                            <Text style={styles.buttonText}>Pay</Text>
+                        </TouchableOpacity>
+                    </View>
 
                     <View style={{ flex: 1 }}>
                         <Modal isVisible={this.state.isModalVisible} >
@@ -124,14 +164,6 @@ export default class Checkout extends Component {
                                 </TouchableOpacity>
                             </View>
                         </Modal>
-                    </View>
-
-                    <View style={styles.footer}>
-
-                        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Checkout')}>
-                            <Text style={styles.buttonText}>Pay</Text>
-                        </TouchableOpacity>
-
                     </View>
                 </View>
             </Container >
@@ -178,6 +210,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         margin: 10,
 
+    },
+    body: {
+        flex: 4
     },
     footer: {
         flex: 1,

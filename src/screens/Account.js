@@ -4,42 +4,25 @@ import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaVi
 // Component
 
 export default class Account extends Component {
-    render() {
-        return (
-            <SafeAreaView style={styles.container}>
-                <KeyboardAvoidingView behavior='height' style={styles.container}>
-                    <TouchableWithoutFeedback style={styles.container}>
-                        <View>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Enter Email"
-                                placeholderTextColor='rgba(0,0,0,0.5)'
-                                keyboardType='email-address'
-                                returnKeyType='next'
-                                autoCorrect={false}
-                                ref={'txtPassword'}
-                            />
 
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Enter Password"
-                                placeholderTextColor='rgba(0,0,0,0.5)'
-                                returnKeyType='go'
-                                secureTextEntry
-                                autoCorrect={false}
-                                ref={'txtPassword'}
-                            />
-                            <TouchableOpacity style={styles.buttonLogin}>
-                                <Text style={styles.buttonText}>Log In</Text>
-                            </TouchableOpacity>
-                            <View style={styles.hrLine} />
-                            <TouchableOpacity style={styles.buttonRegister}>
-                                <Text style={styles.buttonText}>Register</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </KeyboardAvoidingView>
-            </SafeAreaView>
+    componentDidMount(){
+        this.props.navigation.addListener('didFocus', ()=> {
+            if (this.props.isLoggedIn == false) {
+                this.props.navigation.navigate('Login')
+            }
+        })
+             
+    }
+
+    render() {
+        const {id, username, email} = this.props.user
+        console.log(this.props.user);
+        
+
+        return (
+            <View style={styles.container}>
+                <Text>Account Name: {username}</Text>
+            </View>
         );
     }
 }
@@ -75,7 +58,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 6,
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'stretch',
+        alignItems: 'center',
     },
     hrLine: {
         borderBottomColor: 'black',

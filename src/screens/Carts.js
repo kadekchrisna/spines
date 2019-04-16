@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, TextInput, BackHandler } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, TextInput, BackHandler, Alert } from 'react-native';
 import { Container, View, Card } from 'native-base';
 import { FlatList } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -38,6 +38,21 @@ class Carts extends Component {
     deleteItemCart(id){
         this.props.deleteItem(id);
 
+    }
+
+    confirmation(name, id){
+        Alert.alert(
+            'Delete selected item?',
+            name,
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => this.deleteItemCart(id)},
+            ],
+            {cancelable: false},
+          );
     }
 
     render() {
@@ -118,7 +133,7 @@ class Carts extends Component {
                                                 </View>
                                                 <View style={styles.quantity}>
                                                     <TouchableOpacity>
-                                                        <FontAwesome name="trash" size={24} onPress={() => this.deleteItemCart(item.id)} />
+                                                        <FontAwesome name="trash" size={24} onPress={() => this.confirmation(item.name, item.id)} />
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>

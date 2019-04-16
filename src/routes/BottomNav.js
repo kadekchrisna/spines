@@ -3,7 +3,7 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Account from '../screens/Account';
+import Account from '../screens/AccountContainers';
 import Home from '../screens/Home';
 import Product from '../screens/ProductContainers';
 

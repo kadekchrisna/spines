@@ -15,7 +15,6 @@ export default class Products extends Component {
             this.props.getAll();
         })
              
-
     }
     onPress = (id) => {
         this.props.navigation.navigate('Detail',{
