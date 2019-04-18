@@ -1,15 +1,17 @@
-import { register } from '../redux/actions';
+import { clearUser, getUserData } from '../redux/actions';
 import Account from './Account';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
     isLoggedIn: state.account.isLoggedIn,
-    user: state.account.user
+    user: state.account.user,
+    token: state.account.access_token
 
 })
 
 const mapDispatchToProps = dispatch => ({
-    // register: (username, email, password) => dispatch(register(username, email, password))
+    clearUser: () => dispatch(clearUser()),
+    getUserData: (token) => dispatch(getUserData(token)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account)

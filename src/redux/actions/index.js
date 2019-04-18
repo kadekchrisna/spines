@@ -18,22 +18,30 @@ export const getProduct = (id) => {
 }
 
 //Cart
-export const addToCart = (id, price) => {
+export const addToCart = (idProduct, price, id, authToken) => {
     return {
         type: 'ADD_TO_CART',
         payload: axios.post(`${BASE_URL}carts/`, {
-            'user_id': 1,
-            'product_id': id,
+            'user_id': id,
+            'product_id': idProduct,
             'product_qty': 1,
             'total' : price
+        },{
+            headers:{
+                Authorization: authToken
+            }
         })
     }
 
 }
-export const getAllCart = () => {
+export const getAllCart = (id, authToken) => {
     return {
         type: 'GET_ALL_CART',
-        payload: axios.get(`${BASE_URL}carts/1`)
+        payload: axios.get(`${BASE_URL}carts/${id}`, {
+            headers: {
+                Authorization: authToken
+            }
+        })
     }
 
 }
@@ -119,6 +127,24 @@ export const loginUser = (email, password) => {
             'email': email,
             'password' : password
         })
+    }
+
+}
+
+export const getUserData = (token) => {
+    return {
+        type: 'GET_USER',
+        payload: axios.get(`${BASE_URL}user/data`, {
+            headers:{
+                Authorization: token
+            }
+        })
+    }
+
+}
+export const clearUser = () => {
+    return {
+        type: 'CLEAR_USER'
     }
 
 }

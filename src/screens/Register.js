@@ -1,15 +1,17 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, StatusBar, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 // Component
 
 export default class Register extends Component {
-    static navigationOptions= {
+    static navigationOptions = {
         header: null
     }
     render() {
+        if (this.props.isLoggedIn === true) return (this.props.navigation.navigate('Home'))
         return (
             <SafeAreaView style={styles.container}>
+                <StatusBar backgroundColor="#E7E7E7" barStyle="dark-content" />
                 <KeyboardAvoidingView behavior='height' style={styles.container}>
                     <TouchableWithoutFeedback style={styles.container}>
                         <View>
@@ -47,10 +49,10 @@ export default class Register extends Component {
                                 <Text style={styles.buttonText}>Register</Text>
                             </TouchableOpacity>
                             <View style={styles.hrLine} />
-                            <TouchableOpacity style={styles.buttonLogin} onPress={()=> this.props.navigation.navigate('Login')}>
+                            <TouchableOpacity style={styles.buttonLogin} onPress={() => this.props.navigation.navigate('Login')}>
                                 <Text style={styles.buttonText}>Log In</Text>
                             </TouchableOpacity>
-                            
+
                         </View>
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>

@@ -1,75 +1,79 @@
 // Libs
 import React, { Component } from 'react';
-import { Text, StyleSheet, Image, TouchableOpacity, StatusBar, Alert } from 'react-native';
-import { Container, Content, View, Header, Right, Title, Left, CardItem, Card, Body } from 'native-base';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions, FlatList } from 'react-native';
+import { Container, View, Header, Right, Title, Left, CardItem, Card, Body } from 'native-base';
+import { WaveIndicator } from 'react-native-indicators';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {stringToRupiah} from '../redux/helpers/Currency';
+import { stringToRupiah } from '../redux/helpers/Currency';
+import { getMyValue } from '../redux/storage/AsyncStorage';
 
 
 export default class Products extends Component {
 
-    componentDidMount() {
-        this.props.navigation.addListener('didFocus', ()=> {
+    async componentDidMount() {
+        const token = await getMyValue('token')
+        console.log(token);
+
+        this.props.navigation.addListener('didFocus', () => {
             this.props.getAll();
         })
-             
+
+
     }
     onPress = (id) => {
-        this.props.navigation.navigate('Detail',{
-            id:id
+        this.props.navigation.navigate('Detail', {
+            id: id
         });
     }
     render() {
-        console.log(this.props.products);
+        if (this.props.isLoading === true) return (<WaveIndicator color="#009C71" size={60} />)
+        // console.log(this.props.products);
         return (
             <Container >
                 <Header style={styles.header} >
                     <Left>
-                        <Title style={styles.titleHeader}>Spine's</Title>
+                        <Title style={styles.titleHeader}>S P I N E ' S</Title>
                     </Left>
                     <Right>
-                        <TouchableOpacity style={styles.iconCart} onPress={()=> this.props.navigation.navigate('Cart')}>
+                        <TouchableOpacity style={styles.iconCart} onPress={() => this.props.navigation.navigate('Cart')}>
                             <FontAwesome name="shopping-cart" size={24} color='#009C71' />
                         </TouchableOpacity>
                     </Right>
                 </Header>
                 <View style={styles.container}>
+                    <StatusBar backgroundColor="#009C71" barStyle="light-content" />
+                    <FlatList
+                        data={this.props.products}
+                        horizontal={false}
+                        numColumns={2}
+                        renderItem={({ item }) =>
+                            (
+                                <Card style={styles.card}>
+                                    <TouchableOpacity onPress={() => this.onPress(item.id)}>
+                                        <View >
+                                            <CardItem>
+                                                <Image source={{ uri: item.uri }} style={styles.imageCard} />
+                                            </CardItem>
 
-                    <StatusBar backgroundColor="#E7E7E7" barStyle="dark-content" />
-                    <Content>
-                        <FlatList
-                            data={this.props.products}
-                            renderItem={({ item }) =>
-                                (
-                                    <Card>
-                                        <TouchableOpacity onPress={() => this.onPress(item.id)}>
-                                            <View >
-                                                <CardItem>
-                                                    <Image source={{ uri: item.uri }} style={styles.imageCard} />
-                                                </CardItem>
-
-                                                <CardItem style={styles.cardHeader}>
-                                                    <Text style={styles.textMed}>{item.name}</Text>
-                                                </CardItem>
-                                                <View style={styles.hrLine} />
-                                                <CardItem>
-                                                    <Body style={styles.cardBody}>
-                                                        <Text style={styles.textPrice}>
-                                                            {stringToRupiah(String(item.price))}
-                                                        </Text>
-                                                    </Body>
-                                                </CardItem>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </Card>
-                                )
-                            }
-                            keyExtractor={item => item.id.toString()}
-
-                        />
-                    </Content>
+                                            <CardItem style={styles.cardHeader}>
+                                                <Text style={styles.textMed}>{item.name}</Text>
+                                            </CardItem>
+                                            <View style={styles.hrLine} />
+                                            <CardItem>
+                                                <Body style={styles.cardBody}>
+                                                    <Text style={styles.textPrice}>
+                                                        {stringToRupiah(String(item.price))}
+                                                    </Text>
+                                                </Body>
+                                            </CardItem>
+                                        </View>
+                                    </TouchableOpacity>
+                                </Card>
+                            )
+                        }
+                        keyExtractor={item => item.id}
+                    />
                 </View>
             </Container>
         );
@@ -79,7 +83,7 @@ export default class Products extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'center',
         paddingBottom: 5,
         paddingLeft: 2,
@@ -94,6 +98,11 @@ const styles = StyleSheet.create({
         paddingLeft: 2,
         paddingRight: 2,
         alignItems: 'stretch',
+    },
+    card: {
+        flex: 1,
+        width: (Dimensions.get('window').width) / 2,
+
     },
 
     hrLine: {
@@ -111,12 +120,12 @@ const styles = StyleSheet.create({
         marginTop: 2
     },
     textMed: {
-        fontSize: 26,
+        fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 4
     },
     textPrice: {
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: 'bold',
         color: 'red'
     },
@@ -136,7 +145,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     titleHeader: {
-        color: '#009C71'
+        color: '#009C71',
+        paddingLeft: 6,
     },
     iconCart: { marginLeft: 8, marginRight: 8 },
     itemName: { color: '#009C71', fontSize: 12 }

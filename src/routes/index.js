@@ -6,6 +6,7 @@ import Carts from '../screens/CartsContainers';
 import Checkout from '../screens/Checkout';
 import Login from '../screens/LoginContainers';
 import Register from '../screens/RegisterContainers';
+import Splash from '../screens/SplashContainers';
 
 const rootStack = createStackNavigator(
     {
@@ -30,10 +31,13 @@ const rootStack = createStackNavigator(
         },
         Register: {
             screen: Register
+        },
+        Splash: {
+            screen: Splash
         }
     },
     {
-        initialRouteName: 'Home'
+        initialRouteName: 'Splash'
     }
 );
 export default rootStack;

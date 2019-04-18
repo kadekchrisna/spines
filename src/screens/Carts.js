@@ -1,28 +1,44 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, TextInput, BackHandler, Alert } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
 import { Container, View, Card } from 'native-base';
-import { FlatList } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { WaveIndicator } from 'react-native-indicators';
 
 import Cart from '../redux/components/Cart';
 import { stringToRupiah } from '../redux/helpers/Currency';
-
+import { getMyValue } from '../redux/storage/AsyncStorage';
 
 class Carts extends Component {
 
-    componentDidMount() {
-        this.props.navigation.addListener('didFocus', ()=> {
-            this.props.getAllCart();
-        })
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-    }
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    static navigationOptions = {
+        title: 'Cart'
     }
 
-    handleBackPress = () => {
-        this.props.navigation.navigate('Home');
-        return true;
+    async componentDidMount() {
+
+        const token = await getMyValue('token')
+
+        this.props.navigation.addListener('didFocus', ()=> {
+            if (this.props.isLoggedIn === false){
+                this.props.navigation.navigate('Login')
+            }else{
+
+                if (token) {
+                    const { id } = this.props.user
+                    this.props.getAllCart(id, token);
+                    
+                } else {
+                    const {type, token} = this.props.token
+                    const authToken = type + ' ' + token;
+                    const { id } = this.props.user
+                    this.props.getAllCart(id, authToken);
+                    // console.log(id, authToken);
+                    
+                }
+                
+
+            }
+        })
     }
     onTextChanged(text, id){
         this.props.inputQty(id, text)
@@ -56,20 +72,16 @@ class Carts extends Component {
     }
 
     render() {
-        if (!this.props.carts) return (
+        if (this.props.isLoading === true) return(<WaveIndicator color="#009C71" size={60} />)       
+        
+        else if (!this.props.carts || this.props.carts < 1) return (
             <Container>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                     <Text>There no product on your Cart</Text>
                 </View>
             </Container>
-        )
-        else if (this.props.carts.length < 1)  return (
-            <Container>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                    <Text>There no product on your Cart</Text>
-                </View>
-            </Container>
-        )
+        ) 
+        console.log(this.props.carts);
         return (
             <Container>
                 <View style={styles.container}>
@@ -177,9 +189,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        paddingBottom: 5,
         paddingLeft: 2,
         paddingRight: 2,
+        paddingBottom: 60,
         alignItems: 'stretch',
     },
     footer: {

@@ -1,10 +1,10 @@
 // Libs
 import React, { Component } from 'react';
-import { Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { Container, Content, Body, Card, CardItem, View } from 'native-base';
+import { Text, StyleSheet, Image, TouchableOpacity, Dimensions, View } from 'react-native';
+import { Container, Content, Body, Card, CardItem } from 'native-base';
 import Swiper from 'react-native-swiper';
+import { WaveIndicator } from 'react-native-indicators';
 import StarRating from 'react-native-star-rating';
-
 
 import { stringToRupiah } from "../redux/helpers/Currency";
 
@@ -15,16 +15,12 @@ export default class Detail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            starCount: 3.5,
-            name: '',
-            price: '',
-            id: '',
-            description: '',
+            starCount: 3.5
         };
     }
 
     componentDidMount() {
-        const id = this.props.navigation.getParam('id','');        
+        const id = this.props.navigation.getParam('id', '');
         this.props.getProduct(id);
     }
 
@@ -34,22 +30,32 @@ export default class Detail extends Component {
         });
     }
 
-    toCart(id, price){
-        this.props.addToCart(id, price);
-        this.props.navigation.navigate('Cart');
+    toCart(idProduct, price) {
+        if (this.props.isLoggedIn === false) {
+            this.props.navigation.navigate('Login')
+        } else {
+
+            const {type, token} = this.props.token
+            const authToken = type + ' ' + token;
+            const { id } = this.props.user
+            console.log(authToken+' -- '+id);
+            this.props.addToCart(idProduct, price, id, authToken);
+            this.props.navigation.navigate('Cart');
+
+        }
     }
 
 
     render() {
-        if(!this.props.products) return (<Text>loading...</Text>) 
+        console.log(this.props.products);
 
-
+        if (this.props.isLoading === true) return (<WaveIndicator color="#009C71" size={60} />)
         const { name, uri, description, price, id } = this.props.products;
 
         return (
             <Container >
-                <View style={styles.container}>
-                    <Content>
+                <Content>
+                    <View style={styles.container}>
                         <View style={styles.containerSwiper}>
                             <Card>
                                 <CardItem>
@@ -80,11 +86,11 @@ export default class Detail extends Component {
                                 </View>
                                 <View style={styles.hrLine} />
                                 <CardItem>
-                                    <Body style={styles.cardBody}>
+                                    <View style={styles.cardBody}>
                                         <Text>
                                             {description}
                                         </Text>
-                                    </Body>
+                                    </View>
                                 </CardItem>
                             </Card>
                         </View>
@@ -95,8 +101,8 @@ export default class Detail extends Component {
                         >
                             <Text style={styles.buttonText}>Add To Cart</Text>
                         </TouchableOpacity>
-                    </Content>
-                </View>
+                    </View>
+                </Content>
             </Container >
         );
     }

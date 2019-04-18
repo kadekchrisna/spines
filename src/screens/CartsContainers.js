@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
     carts: state.products.carts,
-    total: state.products.total
+    total: state.products.total,
+    isLoading: state.products.isLoading,
+    user: state.account.user,
+    token: state.account.access_token,
+    isLoggedIn: state.account.isLoggedIn,
 })
 
 const mapDispatchToProps = dispatch => ({
-    getAllCart: () => dispatch(getAllCart()),
+    getAllCart: (id, authToken) => dispatch(getAllCart(id, authToken)),
     incrementQty: (id, qty) => dispatch(incrementQty(id, qty)),
     decrementQty: (id, qty) => dispatch(decrementQty(id, qty)),
     inputQty: (id, text) => dispatch(inputQty(id, text)),

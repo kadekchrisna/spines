@@ -1,29 +1,43 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, StatusBar, TouchableOpacity, KeyboardAvoidingView, BackHandler } from 'react-native';
 // Component
 
 export default class Login extends Component {
-    static navigationOptions= {
+    static navigationOptions = {
         header: null
     }
     constructor(props) {
         super(props);
-        this.state = { 
-            email: '',
-            password: '' 
+        this.state = {
+            email: 'l@gmail.com',
+            password: '123456'
         };
-      }
-    login(email, password){
+    }
+    componentDidMount() {        
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        this.props.navigation.navigate('Home');
+        return true;
+    }
+
+    login(email, password) {
         this.props.loginUser(email, password);
-               
+        this.props.navigation.navigate('Home')
+
     }
     render() {
-        if (this.props.isLoggedIn === true) {
-            this.props.navigation.navigate('Home')
-        }
+        
+        
         return (
             <SafeAreaView style={styles.container}>
+                <StatusBar backgroundColor="#E7E7E7" barStyle="dark-content" />
                 <KeyboardAvoidingView behavior='height' style={styles.container}>
                     <TouchableWithoutFeedback style={styles.container}>
                         <View>
@@ -32,7 +46,7 @@ export default class Login extends Component {
                                 style={styles.input}
                                 placeholder="Email"
                                 placeholderTextColor='rgba(0,0,0,0.5)'
-                                onChangeText={(text) => this.setState({email:text})}
+                                onChangeText={(text) => this.setState({ email: text })}
                                 value={this.state.email}
                                 keyboardType='email-address'
                                 returnKeyType='next'
@@ -45,17 +59,17 @@ export default class Login extends Component {
                                 placeholder="Password"
                                 placeholderTextColor='rgba(0,0,0,0.5)'
                                 returnKeyType='go'
-                                onChangeText={(text) => this.setState({password:text})}
+                                onChangeText={(text) => this.setState({ password: text })}
                                 value={this.state.password}
                                 secureTextEntry
                                 autoCorrect={false}
                                 ref={'txtPassword'}
                             />
-                            <TouchableOpacity style={styles.buttonLogin} onPress={()=> this.login(this.state.email, this.state.password)}>
+                            <TouchableOpacity style={styles.buttonLogin} onPress={() => this.login(this.state.email, this.state.password)}>
                                 <Text style={styles.buttonText}>Log In</Text>
                             </TouchableOpacity>
                             <View style={styles.hrLine} />
-                            <TouchableOpacity style={styles.buttonRegister} onPress={()=> this.props.navigation.navigate('Register')}> 
+                            <TouchableOpacity style={styles.buttonRegister} onPress={() => this.props.navigation.navigate('Register')}>
                                 <Text style={styles.buttonText}>Register</Text>
                             </TouchableOpacity>
                         </View>
