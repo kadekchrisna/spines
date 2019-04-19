@@ -14,31 +14,32 @@ class Carts extends Component {
         title: 'Cart'
     }
 
-    async componentDidMount() {
-
-        const token = await getMyValue('token')
-
+    componentDidMount() {
         this.props.navigation.addListener('didFocus', ()=> {
             if (this.props.isLoggedIn === false){
                 this.props.navigation.navigate('Login')
             }else{
-
-                if (token) {
-                    const { id } = this.props.user
-                    this.props.getAllCart(id, token);
-                    
-                } else {
-                    const {type, token} = this.props.token
-                    const authToken = type + ' ' + token;
-                    const { id } = this.props.user
-                    this.props.getAllCart(id, authToken);
-                    // console.log(id, authToken);
-                    
-                }
-                
-
+                this.getMyCart()
             }
         })
+    }
+    async getMyCart(){
+        const token = await getMyValue('token')
+        if (token) {
+            // console.log(token);
+            const { id } = this.props.user
+            // console.log(id);
+            this.props.getAllCart(id, token);
+            
+        } else {
+            const {type, token} = this.props.token
+            const authToken = type + ' ' + token;
+            const { id } = this.props.user
+            this.props.getAllCart(id, authToken);
+            // console.log(id, authToken);
+            
+        }
+
     }
     onTextChanged(text, id){
         this.props.inputQty(id, text)

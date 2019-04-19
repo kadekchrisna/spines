@@ -1,12 +1,13 @@
 // Libs
 import React, { Component } from 'react';
-import { Text, StyleSheet, Image, TouchableOpacity, Dimensions, View } from 'react-native';
+import { Text, StyleSheet, Image, TouchableOpacity, Dimensions, View, ToastAndroid } from 'react-native';
 import { Container, Content, Body, Card, CardItem } from 'native-base';
 import Swiper from 'react-native-swiper';
 import { WaveIndicator } from 'react-native-indicators';
 import StarRating from 'react-native-star-rating';
 
 import { stringToRupiah } from "../redux/helpers/Currency";
+import { getMyValue } from '../redux/storage/AsyncStorage';
 
 export default class Detail extends Component {
     static navigationOptions = {
@@ -30,19 +31,42 @@ export default class Detail extends Component {
         });
     }
 
-    toCart(idProduct, price) {
+    toCart(idProduct, price, name) {
+        this.toast(name);
         if (this.props.isLoggedIn === false) {
             this.props.navigation.navigate('Login')
         } else {
-
-            const {type, token} = this.props.token
-            const authToken = type + ' ' + token;
+            this.checkTokenToCart(idProduct, price);
+        }
+    }
+    async checkTokenToCart(idProduct, price) {
+        const token = await getMyValue('token')
+        if (token) {
+            // console.log(token);
             const { id } = this.props.user
-            console.log(authToken+' -- '+id);
-            this.props.addToCart(idProduct, price, id, authToken);
+            // console.log(id);
+            this.props.addToCart(idProduct, price, id, token);
             this.props.navigation.navigate('Cart');
 
+        } else {
+            const { type, token } = this.props.token
+            const authToken = type + ' ' + token;
+            const { id } = this.props.user
+            this.props.addToCart(idProduct, price, id, authToken);
+            this.props.navigation.navigate('Cart');
+            // console.log(id, authToken);
+
         }
+
+    }
+    toast(name) {
+        ToastAndroid.showWithGravityAndOffset(
+            `${name} has added to your cart.`,
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50,
+        );
     }
 
 
@@ -97,7 +121,7 @@ export default class Detail extends Component {
 
                         <TouchableOpacity
                             style={styles.buttonContainer}
-                            onPress={() => this.toCart(id, price)}
+                            onPress={() => this.toCart(id, price, name)}
                         >
                             <Text style={styles.buttonText}>Add To Cart</Text>
                         </TouchableOpacity>

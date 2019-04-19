@@ -25,12 +25,12 @@ export const addToCart = (idProduct, price, id, authToken) => {
             'user_id': id,
             'product_id': idProduct,
             'product_qty': 1,
-            'total' : price
-        },{
-            headers:{
-                Authorization: authToken
-            }
-        })
+            'total': price
+        }, {
+                headers: {
+                    Authorization: authToken
+                }
+            })
     }
 
 }
@@ -48,7 +48,7 @@ export const getAllCart = (id, authToken) => {
 export const incrementQty = (id, qty) => {
     return {
         type: 'INCREMENT_QTY',
-        payload:  axios.patch(`${BASE_URL}carts/${id}`, {
+        payload: axios.patch(`${BASE_URL}carts/${id}`, {
             qty: qty
         })
     }
@@ -66,13 +66,9 @@ export const decrementQty = (id, qty) => {
             })
         }
     } else {
-        const quantity = 1
-
         return {
-            type: 'DECREMENT_QTY',
-            payload: axios.patch(`${BASE_URL}carts/${id}`, {
-                qty: quantity
-            })
+            type: 'DELETE_ITEM',
+            payload: axios.delete(`${BASE_URL}carts/${id}`)
         }
     }
 }
@@ -82,20 +78,20 @@ export const inputQty = (id, text) => {
         const qty = Number(text);
         return {
             type: 'INCREMENT_QTY',
-            payload:  axios.patch(`${BASE_URL}carts/${id}`, {
+            payload: axios.patch(`${BASE_URL}carts/${id}`, {
                 qty: qty
             })
         }
-        
+
     } else {
         const qty = 0
         return {
             type: 'INCREMENT_QTY',
-            payload:  axios.patch(`${BASE_URL}carts/${id}`, {
+            payload: axios.patch(`${BASE_URL}carts/${id}`, {
                 qty: qty
             })
         }
-        
+
     }
 
 }
@@ -114,7 +110,7 @@ export const registerUser = (username, email, password) => {
         payload: axios.post(`${BASE_URL}auth/register/`, {
             'username': username,
             'email': email,
-            'password' : password
+            'password': password
         })
     }
 
@@ -125,7 +121,7 @@ export const loginUser = (email, password) => {
         type: 'LOGIN_USER',
         payload: axios.post(`${BASE_URL}auth/login/`, {
             'email': email,
-            'password' : password
+            'password': password
         })
     }
 
@@ -135,7 +131,7 @@ export const getUserData = (token) => {
     return {
         type: 'GET_USER',
         payload: axios.get(`${BASE_URL}user/data`, {
-            headers:{
+            headers: {
                 Authorization: token
             }
         })

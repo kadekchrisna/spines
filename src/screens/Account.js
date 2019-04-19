@@ -7,10 +7,8 @@ import { getMyValue, removeValue } from '../redux/storage/AsyncStorage';
 
 export default class Account extends Component {
 
-    async componentDidMount() {
+    componentDidMount() {
 
-        
-        
         this.props.navigation.addListener('didFocus', () => {
             if (this.props.isLoggedIn === false) {
                 this.props.navigation.navigate('Login')
@@ -18,6 +16,11 @@ export default class Account extends Component {
             else {
                 // console.log('---',this.props.token);
                 this.checkToken();
+                this.checkToken().then(val => {
+                    console.log(val);
+                    
+                });
+                
                 // console.log(token);
             }
         })
@@ -25,10 +28,11 @@ export default class Account extends Component {
 
     }
 
-    async checkToken(){
+    checkToken = async() => {
         const token = await getMyValue('token')
         if (token) {
             this.props.getUserData(token);
+            return 1;
         }else{
             const { type, token } = this.props.token
             const authToken = type + ' ' + token;
@@ -36,7 +40,7 @@ export default class Account extends Component {
 
         }
     }
-    logout() {
+    logout = () => {
         this.props.clearUser()
         removeValue('token')
         this.props.navigation.navigate('Home')
