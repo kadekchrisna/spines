@@ -12,11 +12,12 @@ export const setValue = async (key, val) => {
 
 export const getMyValue = (key) => {
 
-    return AsyncStorage.getItem(key).then((val) => {
-        return JSON.parse(val)
-    }).catch((e) => {
-        console.log('error get')
-    })
+    return AsyncStorage.getItem(key)
+        .then((val) => {
+            return JSON.parse(val)
+        }).catch((e) => {
+            console.log('error get')
+        })
 
     console.log('Done Get Value Async')
 

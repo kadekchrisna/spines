@@ -1,25 +1,54 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, StatusBar, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, TextInput, SafeAreaView, StatusBar, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 // Component
 
 export default class Register extends Component {
     static navigationOptions = {
         header: null
     }
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: 'q',
+            email: 'q@gmail.com',
+            password: '123456',
+            confPassword: '123456'
+        }
+    }
+    onValidate = () => {
+        if (this.state.password === this.state.confPassword) {
+            this.props.registerUser(this.state.username, this.state.email, this.state.password) 
+            return this.props.navigation.navigate('Home')
+                      
+        }
+        return Alert.alert('Password and confirmation password must be same!')
+    }
     render() {
-        if (this.props.isLoggedIn === true) return (this.props.navigation.navigate('Home'))
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar backgroundColor="#E7E7E7" barStyle="dark-content" />
                 <KeyboardAvoidingView behavior='height' style={styles.container}>
                     <TouchableWithoutFeedback style={styles.container}>
                         <View>
-                            <Text style={styles.title}>S P I N E ` S</Text>
+                            <Text style={styles.title}>R E G I S T E R</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Username"
+                                placeholderTextColor='rgba(0,0,0,0.5)'
+                                onChangeText={(text) => this.setState({ username: text })}
+                                value={this.state.username}
+                                returnKeyType='next'
+                                autoCorrect={false}
+                                ref={'txtPassword'}
+                            />
+
                             <TextInput
                                 style={styles.input}
                                 placeholder="Email"
                                 placeholderTextColor='rgba(0,0,0,0.5)'
+                                onChangeText={(text) => this.setState({ email: text })}
+                                value={this.state.email}
                                 keyboardType='email-address'
                                 returnKeyType='next'
                                 autoCorrect={false}
@@ -30,6 +59,8 @@ export default class Register extends Component {
                                 style={styles.input}
                                 placeholder="Password"
                                 placeholderTextColor='rgba(0,0,0,0.5)'
+                                onChangeText={(text) => this.setState({ password: text })}
+                                value={this.state.password}
                                 returnKeyType='next'
                                 secureTextEntry
                                 autoCorrect={false}
@@ -40,12 +71,14 @@ export default class Register extends Component {
                                 style={styles.input}
                                 placeholder="Confirm Password"
                                 placeholderTextColor='rgba(0,0,0,0.5)'
+                                onChangeText={(text) => this.setState({ confPassword: text })}
+                                value={this.state.confPassword}
                                 returnKeyType='go'
                                 secureTextEntry
                                 autoCorrect={false}
                                 ref={'txtPassword'}
                             />
-                            <TouchableOpacity style={styles.buttonRegister}>
+                            <TouchableOpacity style={styles.buttonRegister} onPress={() => this.onValidate()}>
                                 <Text style={styles.buttonText}>Register</Text>
                             </TouchableOpacity>
                             <View style={styles.hrLine} />

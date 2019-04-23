@@ -15,74 +15,94 @@ class Carts extends Component {
     }
 
     componentDidMount() {
-        this.props.navigation.addListener('didFocus', ()=> {
-            if (this.props.isLoggedIn === false){
+        this.props.navigation.addListener('didFocus', () => {
+            if (this.props.isLoggedIn === false) {
                 this.props.navigation.navigate('Login')
-            }else{
+            } else {
                 this.getMyCart()
             }
         })
     }
-    async getMyCart(){
+    async getMyCart() {
         const token = await getMyValue('token')
         if (token) {
             // console.log(token);
             const { id } = this.props.user
             // console.log(id);
             this.props.getAllCart(id, token);
-            
+
         } else {
-            const {type, token} = this.props.token
+            const { type, token } = this.props.token
             const authToken = type + ' ' + token;
             const { id } = this.props.user
             this.props.getAllCart(id, authToken);
             // console.log(id, authToken);
-            
+
         }
 
     }
-    onTextChanged(text, id){
+    onTextChanged(text, id) {
         this.props.inputQty(id, text)
     }
-    subNum(id, qty){
-        this.props.decrementQty(id, qty);
+    subNum(id, qty, name) {
+        if (qty < 1) {
+            Alert.alert(
+                'Delete selected item?',
+                name,
+                [
+                    {
+                        text: 'Cancel',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK', onPress: () =>
+                            // alert(qty)
+                            this.props.decrementQty(id, qty)
+                    },
+                ],
+                { cancelable: false },
+            );
+        } else {
+
+            this.props.decrementQty(id, qty);
+        }
 
     }
-    addNum(id, qty){
+    addNum(id, qty) {
         this.props.incrementQty(id, qty);
 
     }
-    deleteItemCart(id){
+    deleteItemCart(id) {
         this.props.deleteItem(id);
 
     }
 
-    confirmation(name, id){
+    confirmation(name, id) {
         Alert.alert(
             'Delete selected item?',
             name,
             [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {text: 'OK', onPress: () => this.deleteItemCart(id)},
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => this.deleteItemCart(id) },
             ],
-            {cancelable: false},
-          );
+            { cancelable: false },
+        );
     }
 
     render() {
-        if (this.props.isLoading === true) return(<WaveIndicator color="#009C71" size={60} />)       
-        
+        if (this.props.isLoading === true) return (<WaveIndicator color="#009C71" size={60} />)
+
         else if (!this.props.carts || this.props.carts < 1) return (
             <Container>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                    <Text>There no product on your Cart</Text>
+                    <Text>There is no product on your Cart</Text>
                 </View>
             </Container>
-        ) 
-        console.log(this.props.carts);
+        )
+        // console.log(this.props.carts);
         return (
             <Container>
                 <View style={styles.container}>
@@ -113,7 +133,7 @@ class Carts extends Component {
                                                     }}
                                                 >
                                                     <TouchableOpacity>
-                                                        <FontAwesome name="minus" size={24} color='#f7c744' onPress={() => this.subNum(item.id, item.product_qty - 1)} />
+                                                        <FontAwesome name="minus" size={24} color='#f7c744' onPress={() => this.subNum(item.id, item.product_qty - 1, item.name)} />
                                                     </TouchableOpacity>
                                                 </View>
                                                 <View
@@ -193,6 +213,7 @@ const styles = StyleSheet.create({
         paddingLeft: 2,
         paddingRight: 2,
         paddingBottom: 60,
+        backgroundColor: '#F2F1F1',
         alignItems: 'stretch',
     },
     footer: {

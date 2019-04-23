@@ -41,7 +41,7 @@ export default class Login extends Component {
                 <KeyboardAvoidingView behavior='height' style={styles.container}>
                     <TouchableWithoutFeedback style={styles.container}>
                         <View>
-                            <Text style={styles.title}>S P I N E ` S</Text>
+                            <Text style={styles.title}>L O G I N</Text>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Email"

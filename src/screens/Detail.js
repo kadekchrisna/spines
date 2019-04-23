@@ -96,7 +96,7 @@ export default class Detail extends Component {
                                         <Text style={styles.textMed}>{name}</Text>
                                         <Text style={styles.textPrice}>{stringToRupiah(String(price))}</Text>
                                     </CardItem>
-                                    <CardItem style={styles.cardStar}>
+                                    {/* <CardItem style={styles.cardStar}>
                                         <Text style={styles.textStart}>{this.state.starCount}/5</Text>
                                         <StarRating
                                             disabled={false}
@@ -106,7 +106,7 @@ export default class Detail extends Component {
                                             rating={this.state.starCount}
                                             selectedStar={(rating) => this.onStarRatingPress(rating)}
                                         />
-                                    </CardItem>
+                                    </CardItem> */}
                                 </View>
                                 <View style={styles.hrLine} />
                                 <CardItem>
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 2,
         paddingRight: 2,
+        backgroundColor: '#F2F1F1',
         alignItems: 'stretch',
     },
     mainInfo: {

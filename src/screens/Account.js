@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, StatusBar, Alert, AsyncStorage } from 'react-native';
-import { Container, Content } from 'native-base'
+import { StyleSheet, Text, View, Image, TouchableOpacity, StatusBar, Alert } from 'react-native';
+import { Container, Content, Card, CardItem } from 'native-base'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import Checkout from './Checkout'
 
 import { getMyValue, removeValue } from '../redux/storage/AsyncStorage';
 
@@ -16,11 +18,7 @@ export default class Account extends Component {
             else {
                 // console.log('---',this.props.token);
                 this.checkToken();
-                this.checkToken().then(val => {
-                    console.log(val);
-                    
-                });
-                
+
                 // console.log(token);
             }
         })
@@ -28,16 +26,10 @@ export default class Account extends Component {
 
     }
 
-    checkToken = async() => {
+    checkToken = async () => {
         const token = await getMyValue('token')
         if (token) {
             this.props.getUserData(token);
-            return 1;
-        }else{
-            const { type, token } = this.props.token
-            const authToken = type + ' ' + token;
-            this.props.getUserData(authToken);
-
         }
     }
     logout = () => {
@@ -84,6 +76,15 @@ export default class Account extends Component {
                                 <Text style={styles.name}>{username}</Text>
                                 <Text style={styles.description}>{email}</Text>
                             </View>
+                            <View style={styles.bodyIcons}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('History')}>
+                                    <Card>
+                                        <CardItem header>
+                                            <Text>History</Text>
+                                        </CardItem>
+                                    </Card>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Content>
@@ -107,8 +108,9 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderColor: "white",
         marginBottom: 10,
-        alignSelf: 'center',
+        alignSelf: 'flex-start',
         position: 'absolute',
+        marginHorizontal: 10,
         marginTop: 130
     },
     name: {
@@ -118,11 +120,16 @@ const styles = StyleSheet.create({
     },
     body: {
         marginTop: 30,
+
     },
     bodyContent: {
         flex: 1,
-        alignItems: 'center',
+        alignItems: 'flex-start',
         padding: 30,
+    },
+    bodyIcons: {
+        flex: 1,
+        paddingHorizontal: 30,
     },
     name: {
         fontSize: 28,
@@ -152,4 +159,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#009C71",
     },
     iconCart: { padding: 16, },
+    hrLine: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        margin: 10,
+    },
 });

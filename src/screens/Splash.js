@@ -21,7 +21,7 @@ export default class Splash extends Component {
 
     async componentDidMount() {
         const token = await getMyValue('token')
-        // console.log(token);
+        console.log(token);``
         if (token) {
             this.props.getUserData(token);
         }

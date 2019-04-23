@@ -1,4 +1,4 @@
-import { register } from '../redux/actions';
+import { registerUser } from '../redux/actions';
 import Register from './Register';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    register: (username, email, password) => dispatch(register(username, email, password))
+    registerUser: (username, email, password) => dispatch(registerUser(username, email, password))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register)

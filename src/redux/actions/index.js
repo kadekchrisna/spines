@@ -45,17 +45,21 @@ export const getAllCart = (id, authToken) => {
     }
 
 }
-export const incrementQty = (id, qty) => {
+export const incrementQty = (id, qty, authToken) => {
     return {
         type: 'INCREMENT_QTY',
         payload: axios.patch(`${BASE_URL}carts/${id}`, {
             qty: qty
+        },{
+            headers: {
+                Authorization: authToken
+            }
         })
     }
 
 }
 
-export const decrementQty = (id, qty) => {
+export const decrementQty = (id, qty, authToken) => {
     if (qty > 0) {
         const quantity = qty
 
@@ -63,23 +67,35 @@ export const decrementQty = (id, qty) => {
             type: 'DECREMENT_QTY',
             payload: axios.patch(`${BASE_URL}carts/${id}`, {
                 qty: quantity
+            },{
+                headers:{
+                    Authorization: authToken
+                }
             })
         }
     } else {
         return {
             type: 'DELETE_ITEM',
-            payload: axios.delete(`${BASE_URL}carts/${id}`)
+            payload: axios.delete(`${BASE_URL}carts/${id}`,{
+                headers:{
+                    Authorization: authToken
+                }
+            })
         }
     }
 }
 
-export const inputQty = (id, text) => {
+export const inputQty = (id, text, authToken) => {
     if (!isNaN(Number(text))) {
         const qty = Number(text);
         return {
             type: 'INCREMENT_QTY',
             payload: axios.patch(`${BASE_URL}carts/${id}`, {
                 qty: qty
+            },{
+                headers:{
+                    Authorization: authToken
+                }
             })
         }
 
@@ -89,16 +105,24 @@ export const inputQty = (id, text) => {
             type: 'INCREMENT_QTY',
             payload: axios.patch(`${BASE_URL}carts/${id}`, {
                 qty: qty
+            },{
+                headers:{
+                    Authorization: authToken
+                }
             })
         }
 
     }
 
 }
-export const deleteItem = (id) => {
+export const deleteItem = (id, authToken) => {
     return {
         type: 'DELETE_ITEM',
-        payload: axios.delete(`${BASE_URL}carts/${id}`)
+        payload: axios.delete(`${BASE_URL}carts/${id}`,{
+            headers:{
+                Authorization: authToken
+            }
+        })
     }
 
 }
@@ -141,6 +165,46 @@ export const getUserData = (token) => {
 export const clearUser = () => {
     return {
         type: 'CLEAR_USER'
+    }
+
+}
+
+//Categories
+export const getAllCategories = () => {
+    return {
+        type: 'GET_ALL_CATEGORIES',
+        payload: axios.get(`${BASE_URL}category`)
+    }
+
+}
+export const getProductByCat = (id) => {
+    return {
+        type: 'GET_PRODUCT_BY_CAT',
+        payload: axios.get(`${BASE_URL}category/${id}`)
+    }
+
+}
+
+//Checkout
+export const addToCheckout = (user_id, province, city, address, phone, courier, bill) => {
+    return {
+        type: 'ADD_CHECKOUT',
+        payload: axios.post(`${BASE_URL}checkout`, {
+            "user_id":  user_id,
+            "province": province, 
+            "city": city, 
+            "address": address, 
+            "phone": phone, 
+            "courier": courier, 
+            "bill": bill
+        })
+    }
+
+}
+export const getCheckout = (id) => {
+    return {
+        type: 'GET_CHECKOUT',
+        payload: axios.get(`${BASE_URL}checkout/${id}`)
     }
 
 }

@@ -3,10 +3,12 @@ import { createStackNavigator } from 'react-navigation';
 import AppNavigator from './BottomNav';
 import Detail from '../screens/DetailsContainers';
 import Carts from '../screens/CartsContainers';
-import Checkout from '../screens/Checkout';
+import Checkout from '../screens/CheckoutContainers';
 import Login from '../screens/LoginContainers';
 import Register from '../screens/RegisterContainers';
 import Splash from '../screens/SplashContainers';
+import Product from '../screens/ProductContainers';
+import History from '../screens/HistoryContainers';
 
 const rootStack = createStackNavigator(
     {
@@ -34,6 +36,12 @@ const rootStack = createStackNavigator(
         },
         Splash: {
             screen: Splash
+        },
+        Product: {
+            screen: Product
+        },
+        History: {
+            screen: History
         }
     },
     {

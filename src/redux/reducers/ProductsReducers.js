@@ -3,7 +3,8 @@ const initial = {
     carts: [],
     detail: {},
     total: 0,
-    isLoading: false
+    isLoading: false,
+    weight: 0
 }
 export default (state = initial, action) => {
     switch (action.type) {
@@ -43,6 +44,7 @@ export default (state = initial, action) => {
                 ...state,
                 carts: action.payload.data.data,
                 total: action.payload.data.total,
+                weight: action.payload.data.weight,
                 isLoading: false
             }
 

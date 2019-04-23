@@ -4,13 +4,13 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Account from '../screens/AccountContainers';
-import Home from '../screens/Home';
+import Home from '../screens/HomeContainers';
 import Product from '../screens/ProductContainers';
 
 const AppNavigator = createMaterialBottomTabNavigator(
     {   
         Home: {
-            screen: Product,
+            screen: Home,
             navigationOptions: {
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ tintColor }) => (

@@ -1,14 +1,15 @@
-import { getAll } from '../redux/actions';
+import { getAll, getProductByCat } from '../redux/actions';
 import Products from './Products';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
-    products: state.products.products,
+    productsCat: state.category.productsCat,
     isLoading: state.products.isLoading
 })
 
 const mapDispatchToProps = dispatch => ({
-    getAll: () => dispatch(getAll())
+    getAll: () => dispatch(getAll()),
+    getProductByCat: (id) => dispatch(getProductByCat(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products)

@@ -3,24 +3,31 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions, FlatList } from 'react-native';
 import { Container, View, Header, Right, Title, Left, CardItem, Card, Body } from 'native-base';
 import { WaveIndicator } from 'react-native-indicators';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { stringToRupiah } from '../redux/helpers/Currency';
 import { getMyValue } from '../redux/storage/AsyncStorage';
 
 
 export default class Products extends Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: navigation.getParam('name', ''),
+        };
+    };
 
     async componentDidMount() {
         const token = await getMyValue('token')
         console.log(token);
 
         this.props.navigation.addListener('didFocus', () => {
-            this.props.getAll();
+            const id = this.props.navigation.getParam('id', '');
+            this.props.getProductByCat(id);
         })
 
 
     }
+
+    
     onPress = (id) => {
         this.props.navigation.navigate('Detail', {
             id: id
@@ -31,20 +38,23 @@ export default class Products extends Component {
         // console.log(this.props.products);
         return (
             <Container >
-                <Header style={styles.header} >
+                {/* <Header style={styles.header} >
                     <Left>
                         <Title style={styles.titleHeader}>S P I N E ' S</Title>
                     </Left>
                     <Right>
+                        <TouchableOpacity style={styles.iconCart} onPress={() => alert('search')}>
+                            <FontAwesome name="search" size={24} color='#009C71' />
+                        </TouchableOpacity>
                         <TouchableOpacity style={styles.iconCart} onPress={() => this.props.navigation.navigate('Cart')}>
                             <FontAwesome name="shopping-cart" size={24} color='#009C71' />
                         </TouchableOpacity>
                     </Right>
-                </Header>
+                </Header> */}
                 <View style={styles.container}>
                     <StatusBar backgroundColor="#009C71" barStyle="light-content" />
                     <FlatList
-                        data={this.props.products}
+                        data={this.props.productsCat}
                         horizontal={false}
                         numColumns={2}
                         renderItem={({ item }) =>
@@ -88,6 +98,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 2,
         paddingRight: 2,
+        backgroundColor: '#F2F1F1',
         alignItems: 'stretch',
     },
     containerEmpty: {

@@ -13,10 +13,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     getAllCart: (id, authToken) => dispatch(getAllCart(id, authToken)),
-    incrementQty: (id, qty) => dispatch(incrementQty(id, qty)),
-    decrementQty: (id, qty) => dispatch(decrementQty(id, qty)),
-    inputQty: (id, text) => dispatch(inputQty(id, text)),
-    deleteItem: (id) => dispatch(deleteItem(id))
+    incrementQty: (id, qty, authToken) => dispatch(incrementQty(id, qty, authToken)),
+    decrementQty: (id, qty, authToken) => dispatch(decrementQty(id, qty, authToken)),
+    inputQty: (id, text, authToken) => dispatch(inputQty(id, text, authToken)),
+    deleteItem: (id, authToken) => dispatch(deleteItem(id, authToken))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Carts)
